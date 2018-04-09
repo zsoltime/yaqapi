@@ -2,7 +2,10 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
 
+const { db, port } = require('./config');
+
 const app = express();
+
 if (app.get('env') === 'development') {
   app.use(morgan('dev'));
 } else {
@@ -20,8 +23,8 @@ app.get('/', (req, res) => {
   });
 });
 
-const server = app.listen(3000, () => {
-  console.log('API is running http://localhost:%d', 3000);
+const server = app.listen(port, () => {
+  console.log('API is running http://localhost:%s', port);
 });
 
 module.exports = { app, server };
