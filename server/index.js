@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 
+const routes = require('./routes');
 const { db, port } = require('./config');
 
 const app = express();
@@ -26,6 +27,8 @@ mongoose.connection.on('error', () => {
 mongoose.connection.on('connected', () => {
   console.log(`Connected to database: ${db}`);
 });
+
+app.use('/api', routes);
 
 app.get('/', (req, res) => {
   res.send({
