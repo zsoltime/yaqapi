@@ -1,23 +1,54 @@
 const mongoose = require('mongoose');
-const slug = require('slug');
+const slugify = require('slug');
+
+const SlugModel = require('./Slug');
 
 const authorSchema = mongoose.Schema({
   name: {
     type: String,
     required: true,
+    trim: true,
   },
   slug: {
     type: String,
     default: function defaultSlug() {
-      return this.name ? slug(this.name, { lower: true }) : null;
+      return this.name ? slugify(this.name, { lower: true }) : null;
     },
     lowercase: true,
     required: true,
+    trim: true,
     unique: true,
   },
   image: String,
   nationality: String,
   profession: String,
 });
+
+authorSchema.query.bySlug = function findBySlug(slug) {
+  return this.find({ slug });
+};
+
+function ensureUniqueSlug(next) {
+  mongoose.models.Author.count({ slug: this.slug })
+    .exec()
+    .then((res) => {
+      if (res === 0) {
+        return null;
+      }
+      return SlugModel.findOneAndUpdate(
+        { slug: this.slug },
+        { $inc: { count: 1 } },
+        { upsert: true, new: true }
+      ).exec();
+    })
+    .then((res) => {
+      if (res) {
+        this.slug = `${this.slug}-${res.count}`;
+      }
+      return next();
+    });
+}
+
+authorSchema.pre('save', ensureUniqueSlug);
 
 module.exports = mongoose.model('Author', authorSchema);
