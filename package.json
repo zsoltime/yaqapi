@@ -15,7 +15,10 @@
     "type": "git",
     "url": "git+https://github.com/zsoltime/yaqapi.git"
   },
-  "keywords": ["quote", "api"],
+  "keywords": [
+    "quote",
+    "api"
+  ],
   "author": {
     "name": "Zsolt Meszaros",
     "url": "https://github.com/zsoltime"
@@ -31,6 +34,9 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.10.0",
     "express": "^4.16.3",
+    "express-validation": "^1.0.2",
+    "http-status": "^1.0.1",
+    "joi": "^13.1.2",
     "mongoose": "^5.0.13",
     "morgan": "^1.9.0",
     "slug": "^0.9.1"
