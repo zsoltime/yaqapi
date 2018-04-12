@@ -36,8 +36,11 @@ app.get('/', (req, res) => {
   });
 });
 
-const server = app.listen(port, () => {
-  console.log('API is running http://localhost:%s', port);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log('API is running http://localhost:%s', port);
+  });
+}
 
-module.exports = { app, server };
+module.exports = app;

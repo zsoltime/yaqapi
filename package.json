@@ -2,14 +2,17 @@
   "name": "yaqapi",
   "version": "0.1.0",
   "description": "Yet another quote API",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "build": "",
     "dev": "cross-env NODE_ENV=development nodemon --exec \"node -r dotenv/config server\"",
     "lint": "eslint ./**/*.js",
-    "start": "cross-env NODE_ENV=production node server",
-    "test": "cross-env NODE_ENV=test jest",
-    "test:watch": "cross-env NODE_ENV=test jest --watch"
+    "start": "cross-env NODE_ENV=production node -r dotenv/config server",
+    "test": "cross-env NODE_ENV=test node -r dotenv/config ./node_modules/.bin/jest --forceExit",
+    "test:watch": "cross-env NODE_ENV=test node -r dotenv/config ./node_modules/.bin/jest --watch --forceExit"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
