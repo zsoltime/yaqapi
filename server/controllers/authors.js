@@ -1,3 +1,5 @@
+const HTTPStatus = require('http-status');
+
 const Author = require('../models/Author');
 
 module.exports.create = (req, res, next) => {
@@ -34,9 +36,12 @@ module.exports.remove = (req, res, next) => {
 };
 
 module.exports.search = (req, res, next) => {
+  const { limit = 10, skip = 0 } = req.query;
   const regex = new RegExp(req.params.query.replace(/(?=\W)/g, '\\'), 'i');
 
   Author.find({ name: { $regex: regex } })
+    .skip(skip)
+    .limit(limit)
     .exec()
     .then(authors => res.json(authors), err => next(err));
 };
@@ -47,9 +52,17 @@ module.exports.load = (req, res, next, id) => {
   Author.findById(id)
     .exec()
     .then(
-      (author) => {
-        req.dbAuthor = author;
-        return next();
+      author => {
+        if (author) {
+          req.dbAuthor = author;
+          return next();
+        }
+
+        return res.status(404).json({
+          status: 404,
+          statusText: HTTPStatus[404],
+          errors: [{ messages: ['The resource requested does not exist'] }],
+        });
       },
       err => next(err)
     );
