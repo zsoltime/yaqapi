@@ -1,22 +1,14 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
-const morgan = require('morgan');
 
-const routes = require('./routes');
 const { db, port } = require('./config');
+const logger = require('./middlewares/logger');
+const routes = require('./routes');
 
 const app = express();
 
-if (app.get('env') === 'development') {
-  app.use(morgan('dev'));
-  mongoose.set('debug', true);
-} else {
-  app.use(morgan('common', {
-    skip: (req, res) => res.statusCode < 400,
-    stream: `${__dirname}/../morgan.log`,
-  }));
-}
+app.use(logger);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
