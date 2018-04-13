@@ -2,20 +2,26 @@
   "name": "yaqapi",
   "version": "0.1.0",
   "description": "Yet another quote API",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "build": "",
     "dev": "cross-env NODE_ENV=development nodemon --exec \"node -r dotenv/config server\"",
     "lint": "eslint ./**/*.js",
-    "start": "cross-env NODE_ENV=production node server",
-    "test": "cross-env NODE_ENV=test jest",
-    "test:watch": "cross-env NODE_ENV=test jest --watch"
+    "start": "cross-env NODE_ENV=production node -r dotenv/config server",
+    "test": "cross-env NODE_ENV=test node -r dotenv/config ./node_modules/.bin/jest --forceExit",
+    "test:watch": "cross-env NODE_ENV=test node -r dotenv/config ./node_modules/.bin/jest --watch --forceExit"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zsoltime/yaqapi.git"
   },
-  "keywords": ["quote", "api"],
+  "keywords": [
+    "quote",
+    "api"
+  ],
   "author": {
     "name": "Zsolt Meszaros",
     "url": "https://github.com/zsoltime"
@@ -31,8 +37,12 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.10.0",
     "express": "^4.16.3",
+    "express-validation": "^1.0.2",
+    "http-status": "^1.0.1",
+    "joi": "^13.1.2",
     "mongoose": "^5.0.13",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "slug": "^0.9.1"
   },
   "devDependencies": {
     "cross-env": "^5.1.4",

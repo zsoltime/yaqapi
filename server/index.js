@@ -1,21 +1,15 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
-const morgan = require('morgan');
 
 const { db, port } = require('./config');
+const errorHandler = require('./middlewares/errorHandler');
+const logger = require('./middlewares/logger');
+const routes = require('./routes');
 
 const app = express();
 
-if (app.get('env') === 'development') {
-  app.use(morgan('dev'));
-  mongoose.set('debug', true);
-} else {
-  app.use(morgan('common', {
-    skip: (req, res) => res.statusCode < 400,
-    stream: `${__dirname}/../morgan.log`,
-  }));
-}
+app.use(logger);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -27,14 +21,20 @@ mongoose.connection.on('connected', () => {
   console.log(`Connected to database: ${db}`);
 });
 
+app.use('/api', routes);
+app.use(errorHandler);
+
 app.get('/', (req, res) => {
   res.send({
     status: 'OK',
   });
 });
 
-const server = app.listen(port, () => {
-  console.log('API is running http://localhost:%s', port);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
+    // eslint-disable-next-line no-console
+    console.log('API is running http://localhost:%s', port);
+  });
+}
 
-module.exports = { app, server };
+module.exports = app;

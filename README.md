@@ -16,11 +16,11 @@
 | [ ]  |  GET   | /categories/:categoryId         | Get single category                                             |
 | [ ]  |  PUT   | /categories/:categoryId         | Update category                                                 |
 | [ ]  | DELETE | /categories/:categoryId         | Delete category                                                 |
-| [ ]  |  GET   | /authors                        | Get all the authors                                             |
-| [ ]  |  POST  | /authors                        | Add new author                                                  |
-| [ ]  |  GET   | /authors/:authorId              | Get single author                                               |
-| [ ]  |  PUT   | /authors/:authorId              | Update author                                                   |
-| [ ]  | DELETE | /authors/:authorId              | Delete author                                                   |
+| [x]  |  GET   | /authors                        | Get all the authors                                             |
+| [x]  |  POST  | /authors                        | Add new author                                                  |
+| [x]  |  GET   | /authors/:authorId              | Get single author                                               |
+| [x]  |  PUT   | /authors/:authorId              | Update author                                                   |
+| [x]  | DELETE | /authors/:authorId              | Delete author                                                   |
 | [ ]  |  GET   | /quotes/search/:query/:num?     | Search for quotes, limited to `:num` results (default is 1)     |
 | [ ]  |  GET   | /categories/search/:query/:num? | Search for categories, limited to `:num` results (default is 1) |
-| [ ]  |  GET   | /authors/search/:query/:num?    | Search for authors, limited to `:num` results (default is 1)    |
+| [x]  |  GET   | /authors/search/:query/:num?    | Search for authors, limited to `:num` results (default is 1)    |
