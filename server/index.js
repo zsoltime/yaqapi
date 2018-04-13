@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const { db, port } = require('./config');
+const errorHandler = require('./middlewares/errorHandler');
 const logger = require('./middlewares/logger');
 const routes = require('./routes');
 
@@ -21,6 +22,7 @@ mongoose.connection.on('connected', () => {
 });
 
 app.use('/api', routes);
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
   res.send({
