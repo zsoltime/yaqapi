@@ -1,3 +1,5 @@
+'use strict';
+
 const Author = require('../../server/models/Author');
 
 describe('Author model', () => {

@@ -1,3 +1,5 @@
+'use strict';
+
 const HTTPStatus = require('http-status');
 
 const Author = require('../models/Author');

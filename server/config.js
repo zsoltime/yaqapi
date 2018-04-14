@@ -1,3 +1,5 @@
+'use strict';
+
 const config = { db: null, port: null };
 
 if (process.env.NODE_ENV === 'test') {
