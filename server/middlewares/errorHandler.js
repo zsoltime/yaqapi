@@ -1,3 +1,5 @@
+'use strict';
+
 const expressValidation = require('express-validation');
 
 // eslint-disable-next-line no-unused-vars

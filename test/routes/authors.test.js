@@ -1,3 +1,5 @@
+'use strict';
+
 describe.skip('Author routes', () => {
   test('route GET / to controller.list');
   test('route POST / to controller.create');
