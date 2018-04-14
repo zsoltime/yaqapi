@@ -41,9 +41,9 @@ describe('Author endpoints', () => {
         .then((res) => {
           expect(res.body).toHaveLength(dummyAuthorList.length);
 
-          res.body.forEach(author => {
-            expect({}.hasOwnProperty.call(author, 'name')).toBeTruthy();
-            expect({}.hasOwnProperty.call(author, 'slug')).toBeTruthy();
+          res.body.forEach((author) => {
+            expect(author).toHaveProperty('name');
+            expect(author).toHaveProperty('slug');
           });
 
           done();
@@ -66,11 +66,8 @@ describe('Author endpoints', () => {
         .send(dummyAuthor)
         .expect('Content-Type', /json/)
         .expect(HTTPStatus.OK)
-        .then(res => {
-          expect(res.body.name).toBe(dummyAuthor.name);
-          expect(res.body.profession).toBe(dummyAuthor.profession);
-          expect(res.body.nationality).toBe(dummyAuthor.nationality);
-          expect(res.body.image).toBe(dummyAuthor.image);
+        .then((res) => {
+          expect(res.body).toEqual(expect.objectContaining(dummyAuthor));
           expect(res.body.slug).toBeDefined();
           done();
         });
