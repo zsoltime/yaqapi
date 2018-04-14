@@ -3,27 +3,27 @@
 const express = require('express');
 const validate = require('express-validation');
 
-const authorController = require('../controllers/authors');
+const { authors } = require('../controllers');
 const validations = require('./validation/authors');
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(authorController.list)
-  .post(validate(validations.createAuthor), authorController.create);
+  .get(authors.list)
+  .post(validate(validations.createAuthor), authors.create);
 
 router
   .route('/:authorId')
-  .get(authorController.get)
-  .put(validate(validations.updateAuthor), authorController.update)
-  .delete(authorController.remove);
+  .get(authors.get)
+  .put(validate(validations.updateAuthor), authors.update)
+  .delete(authors.remove);
 
 router
   .route('/search/:query/:num?')
-  .get(validate(validations.search), authorController.search);
+  .get(validate(validations.search), authors.search);
 
 router.param('authorId', validate(validations.getAuthor));
-router.param('authorId', authorController.load);
+router.param('authorId', authors.load);
 
 module.exports = router;
