@@ -1,8 +1,8 @@
 'use strict';
 
 const fs = require('fs');
-const morgan = require('morgan');
 const path = require('path');
+const morgan = require('morgan');
 
 function logger(req, res, next) {
   if (process.env.NODE_ENV === 'development') {

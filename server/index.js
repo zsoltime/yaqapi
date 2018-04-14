@@ -20,6 +20,7 @@ mongoose.connection.on('error', () => {
   throw new Error(`Unable to connect to database: ${db}`);
 });
 mongoose.connection.on('connected', () => {
+  // eslint-disable-next-line no-console
   console.log(`Connected to database: ${db}`);
 });
 

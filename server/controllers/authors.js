@@ -54,7 +54,7 @@ module.exports.load = (req, res, next, id) => {
   Author.findById(id)
     .exec()
     .then(
-      author => {
+      (author) => {
         if (author) {
           req.dbAuthor = author;
           return next();
