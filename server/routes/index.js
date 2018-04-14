@@ -1,19 +1,13 @@
 'use strict';
 
 const express = require('express');
-const HTTPStatus = require('http-status');
 
 const authorRoutes = require('./authors');
+const notFound = require('./notFound');
 
 const router = express.Router();
 
 router.use('/authors', authorRoutes);
-
-router.use((req, res, next) => {
-  res.status(404).json({
-    status: 404,
-    statusText: HTTPStatus[404],
-  });
-});
+router.use(notFound);
 
 module.exports = router;
