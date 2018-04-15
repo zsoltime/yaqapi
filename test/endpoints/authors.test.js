@@ -128,9 +128,7 @@ describe('Author endpoints', () => {
     });
 
     test('return the author if it exists', async (done) => {
-      const author = await new Author(dummyAuthor)
-        .save()
-        .then(res => res);
+      const author = await new Author(dummyAuthor).save();
 
       request(app)
         .get(`/api/authors/${author._id}`)
@@ -175,9 +173,7 @@ describe('Author endpoints', () => {
     });
 
     test('return the updated document after saved to database', async (done) => {
-      const author = await new Author(dummyAuthor)
-        .save()
-        .then(res => res);
+      const author = await new Author(dummyAuthor).save();
       const updatedFields = { profession: 'author' };
 
       request(app)
@@ -224,9 +220,7 @@ describe('Author endpoints', () => {
     });
 
     test('return Bad Request if name field is invalid', async (done) => {
-      const author = await new Author(dummyAuthor)
-        .save()
-        .then(res => res);
+      const author = await new Author(dummyAuthor).save();
       const updatedFields = { name: '' };
 
       request(app)
@@ -250,9 +244,7 @@ describe('Author endpoints', () => {
     });
 
     test('return Bad Request if slug field is invalid', async (done) => {
-      const author = await new Author(dummyAuthor)
-        .save()
-        .then(res => res);
+      const author = await new Author(dummyAuthor).save();
       const updatedFields = { slug: '' };
 
       request(app)
@@ -276,12 +268,8 @@ describe('Author endpoints', () => {
     });
 
     test('create unique slugs', async (done) => {
-      const author1 = await new Author(dummyAuthor)
-        .save()
-        .then(res => res);
-      const author2 = await new Author(dummyAuthor)
-        .save()
-        .then(res => res);
+      const author1 = await new Author(dummyAuthor).save();
+      const author2 = await new Author(dummyAuthor).save();
 
       request(app)
         .put(`/api/authors/${author2._id}`)
@@ -303,9 +291,7 @@ describe('Author endpoints', () => {
     });
 
     test('return No Content if deleted document successfully', async (done) => {
-      const author = await new Author(dummyAuthor)
-        .save()
-        .then(res => res);
+      const author = await new Author(dummyAuthor).save();
 
       request(app)
         .delete(`/api/authors/${author._id}`)
