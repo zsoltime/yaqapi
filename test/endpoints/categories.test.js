@@ -110,9 +110,7 @@ describe('Category endpoints', () => {
     });
 
     test('return the category if it exists', async (done) => {
-      const category = await new Category(dummyCategory)
-        .save()
-        .then(res => res);
+      const category = await new Category(dummyCategory).save();
 
       request(app)
         .get(`/api/categories/${category._id}`)
@@ -159,9 +157,7 @@ describe('Category endpoints', () => {
     });
 
     test('return the updated document after saved to database', async (done) => {
-      const category = await new Category(dummyCategory)
-        .save()
-        .then(res => res);
+      const category = await new Category(dummyCategory).save();
       const updatedFields = {
         name: 'New Category',
         slug: 'new-category',
@@ -211,9 +207,7 @@ describe('Category endpoints', () => {
     });
 
     test('return Bad Request if name field is invalid', async (done) => {
-      const category = await new Category(dummyCategory)
-        .save()
-        .then(res => res);
+      const category = await new Category(dummyCategory).save();
       const updatedFields = { name: '' };
 
       request(app)
@@ -237,9 +231,7 @@ describe('Category endpoints', () => {
     });
 
     test('return Bad Request if slug field is invalid', async (done) => {
-      const category = await new Category(dummyCategory)
-        .save()
-        .then(res => res);
+      const category = await new Category(dummyCategory).save();
       const updatedFields = { slug: '' };
 
       request(app)
@@ -272,9 +264,7 @@ describe('Category endpoints', () => {
     });
 
     test('return No Content if deleted document successfully', async (done) => {
-      const category = await new Category(dummyCategory)
-        .save()
-        .then(res => res);
+      const category = await new Category(dummyCategory).save();
 
       request(app)
         .delete(`/api/categories/${category._id}`)
