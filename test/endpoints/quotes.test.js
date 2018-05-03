@@ -373,4 +373,127 @@ describe('Quote endpoints', () => {
         });
     });
   });
+
+  describe('DELETE /quotes/:quoteId', () => {
+    test('return No Content if deleted document successfully', async (done) => {
+      const quote = {
+        author: author._id.toString(),
+        categories: [category._id.toString()],
+        quote: dummyQuoteList[0],
+      };
+
+      const insertedQuote = await new Quote(quote).save();
+
+      expect(await Quote.findById(insertedQuote._id)).not.toBe(null);
+
+      request(app)
+        .delete(`/api/quotes/${insertedQuote._id}`)
+        .expect(HTTPStatus.NO_CONTENT)
+        .then((res) => {
+          expect(res.headers).not.toHaveProperty('Content-Type');
+          expect(res.body).toEqual({});
+
+          Quote.findById(insertedQuote._id).then((found) => {
+            expect(found).toBe(null);
+            return done();
+          });
+        });
+    });
+
+    test('return Not Found if quoteId does not exist', (done) => {
+      const quoteId = '5ad06b68dc42f3b88c548378';
+
+      request(app)
+        .delete(`/api/quotes/${quoteId}`)
+        .expect('Content-Type', /json/)
+        .expect(HTTPStatus.NOT_FOUND)
+        .then((res) => {
+          expect(res.body.errors).toHaveLength(1);
+          expect(res.body.errors[0]).toBeTruthy();
+          done();
+        });
+    });
+
+    test('return Bad Request if quoteId is not a correct Mongo ID', (done) => {
+      const invalidId = '5ad06b';
+
+      request(app)
+        .delete(`/api/quotes/${invalidId}`)
+        .expect('Content-Type', /json/)
+        .expect(HTTPStatus.BAD_REQUEST)
+        .then((res) => {
+          expect(res.body.errors).toHaveLength(1);
+          expect(res.body.errors[0].field[0]).toBe('quoteId');
+          done();
+        });
+    });
+  });
+
+  describe('GET /quotes/search/:query', () => {
+    test('return a list of matched documents', (done) => {
+      const query = 'never';
+
+      const isMatch = (haystack, needle) =>
+        haystack.search(new RegExp(needle, 'i')) > -1;
+
+      const matches = dummyQuoteList.reduce(
+        (list, quote) =>
+          (isMatch(quote, query) ? [...list, quote] : list),
+        []
+      );
+
+      request(app)
+        .get(`/api/quotes/search/${query}`)
+        .expect('Content-Type', /json/)
+        .expect(HTTPStatus.OK)
+        .then((res) => {
+          const expectedAuthor = expect.objectContaining({
+            id: author._id.toString(),
+            name: author.name,
+            href: expect.stringContaining(
+              `/api/authors/${author._id}`
+            ),
+          });
+          const expectedCategories = [
+            expect.objectContaining({
+              id: category._id.toString(),
+              name: category.name,
+              href: expect.stringContaining(
+                `/api/categories/${category._id}`
+              ),
+            }),
+          ];
+          const expectedQuote = expect.stringMatching(
+            new RegExp(`/${dummyQuoteList.join('|')}/`)
+          );
+
+          expect(res.body).toHaveLength(matches.length);
+          expect(res.body).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                author: expectedAuthor,
+                categories: expectedCategories,
+                quote: expectedQuote,
+              }),
+            ])
+          );
+
+          done();
+        });
+    });
+
+    test('return Bad Request if query length is less than 3 characters', (done) => {
+      const query = 'ne';
+
+      request(app)
+        .get(`/api/quotes/search/${query}`)
+        .expect('Content-Type', /json/)
+        .expect(HTTPStatus.BAD_REQUEST)
+        .then((res) => {
+          expect(res.body.errors).toHaveLength(1);
+          expect(res.body.errors[0].field[0]).toBe('query');
+          done();
+        });
+    });
+  });
 });
