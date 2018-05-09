@@ -18,13 +18,18 @@ describe('Category endpoints', () => {
     { name: 'Science' },
   ];
 
-  beforeAll(() => wipeCollections([Category]));
+  beforeAll((done) => {
+    wipeCollections([Category])
+      .then(() => done())
+      .catch(err => done(err));
+  });
 
   describe('GET /categories', () => {
     beforeEach((done) => {
       wipeCollections([Category])
         .then(() => Category.create(dummyCategoryList))
-        .then(() => done());
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     test('return a list of categories', (done) => {
@@ -47,7 +52,9 @@ describe('Category endpoints', () => {
 
   describe('POST /categories', () => {
     beforeEach((done) => {
-      wipeCollections([Category]).then(() => done());
+      wipeCollections([Category])
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     afterEach(() => {
@@ -106,7 +113,9 @@ describe('Category endpoints', () => {
 
   describe('GET /categories/:categoryId', () => {
     beforeEach((done) => {
-      wipeCollections([Category]).then(() => done());
+      wipeCollections([Category])
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     test('return the category if it exists', async (done) => {
@@ -153,7 +162,9 @@ describe('Category endpoints', () => {
 
   describe('PUT /categories/:categoryId', () => {
     beforeEach((done) => {
-      wipeCollections([Category]).then(() => done());
+      wipeCollections([Category])
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     test('return the updated document after saved to database', async (done) => {
@@ -260,7 +271,9 @@ describe('Category endpoints', () => {
 
   describe('DELETE /categories/:categoryId', () => {
     beforeEach((done) => {
-      wipeCollections([Category]).then(() => done());
+      wipeCollections([Category])
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     test('return No Content if deleted document successfully', async (done) => {
@@ -313,7 +326,8 @@ describe('Category endpoints', () => {
     beforeEach((done) => {
       wipeCollections([Category])
         .then(() => Category.create(dummyCategoryList))
-        .then(() => done());
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     test('return a list of matched documents', (done) => {
