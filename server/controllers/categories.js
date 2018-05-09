@@ -16,7 +16,6 @@ module.exports.list = (req, res, next) => {
   Category.find()
     .skip(skip)
     .limit(limit)
-    .exec()
     .then(categories => res.json(categories), err => next(err));
 };
 
@@ -44,30 +43,27 @@ module.exports.search = (req, res, next) => {
   Category.find({ name: { $regex: regex } })
     .skip(skip)
     .limit(limit)
-    .exec()
     .then(categories => res.json(categories), err => next(err));
 };
 
 module.exports.get = (req, res) => res.json(req.dbCategory);
 
 module.exports.load = (req, res, next, id) => {
-  Category.findById(id)
-    .exec()
-    .then(
-      (category) => {
-        if (category) {
-          req.dbCategory = category;
-          return next();
-        }
+  Category.findById(id).then(
+    (category) => {
+      if (category) {
+        req.dbCategory = category;
+        return next();
+      }
 
-        return res.status(404).json({
-          status: 404,
-          statusText: HTTPStatus[404],
-          errors: [
-            { messages: ['The resource requested does not exist'] },
-          ],
-        });
-      },
-      err => next(err)
-    );
+      return res.status(404).json({
+        status: 404,
+        statusText: HTTPStatus[404],
+        errors: [
+          { messages: ['The resource requested does not exist'] },
+        ],
+      });
+    },
+    err => next(err)
+  );
 };
