@@ -8,24 +8,14 @@ const Author = require('../../server/models/Author');
 const Category = require('../../server/models/Category');
 const Quote = require('../../server/models/Quote');
 const Slug = require('../../server/models/Slug');
+
 const { wipeCollections } = require('../helpers');
+const dummyAuthor = require('../fixtures/authors')[0];
+const dummyCategory = require('../fixtures/categories')[0];
+const dummyQuoteList = require('../fixtures/quotes');
+const { invalidId, validId } = require('../fixtures/ids');
 
 describe('Quote endpoints', () => {
-  const dummyAuthor = {
-    name: 'Robert A. Heinlein',
-  };
-  const dummyCategory = {
-    name: 'Fun',
-  };
-  const dummyQuoteList = [
-    "They didn't want it good, they wanted it Wednesday.",
-    'Yield to temptation. It may not pass your way again.',
-    'Never underestimate the power of human stupidity.',
-    'It is a truism that almost any sect, cult, or religion will legislate its creed into law if it acquires the political power to do so.',
-    'Never insult anyone by accident.',
-    'The universe never did make sense; I suspect it was built on government contract.',
-    'Happiness consists in getting enough sleep. Just that, nothing more.',
-  ];
   let author = null;
   let category = null;
   let quotes = null;
@@ -224,10 +214,8 @@ describe('Quote endpoints', () => {
     });
 
     test('return Not Found if quoteId does not exist', (done) => {
-      const quoteId = '5ad06b68dc42f3b88c548378';
-
       request(app)
-        .get(`/api/quotes/${quoteId}`)
+        .get(`/api/quotes/${validId}`)
         .expect('Content-Type', /json/)
         .expect(HTTPStatus.NOT_FOUND)
         .then((res) => {
@@ -238,8 +226,6 @@ describe('Quote endpoints', () => {
     });
 
     test('return Bad Request if quoteId is not a correct Mongo ID', (done) => {
-      const invalidId = '5ad06b';
-
       request(app)
         .get(`/api/quotes/${invalidId}`)
         .expect('Content-Type', /json/)
@@ -401,10 +387,8 @@ describe('Quote endpoints', () => {
     });
 
     test('return Not Found if quoteId does not exist', (done) => {
-      const quoteId = '5ad06b68dc42f3b88c548378';
-
       request(app)
-        .delete(`/api/quotes/${quoteId}`)
+        .delete(`/api/quotes/${validId}`)
         .expect('Content-Type', /json/)
         .expect(HTTPStatus.NOT_FOUND)
         .then((res) => {
@@ -415,8 +399,6 @@ describe('Quote endpoints', () => {
     });
 
     test('return Bad Request if quoteId is not a correct Mongo ID', (done) => {
-      const invalidId = '5ad06b';
-
       request(app)
         .delete(`/api/quotes/${invalidId}`)
         .expect('Content-Type', /json/)
