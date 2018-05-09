@@ -24,13 +24,18 @@ describe('Author endpoints', () => {
     { name: 'Paloma Picasso' },
   ];
 
-  beforeAll(() => wipeCollections([Slug, Author]));
+  beforeAll((done) => {
+    wipeCollections([Slug, Author])
+      .then(() => done())
+      .catch(err => done(err));
+  });
 
   describe('GET /authors', () => {
     beforeEach((done) => {
       wipeCollections([Slug, Author])
         .then(() => Author.create(dummyAuthorList))
-        .then(() => done());
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     test('return a list of authors', (done) => {
@@ -53,7 +58,9 @@ describe('Author endpoints', () => {
 
   describe('POST /authors', () => {
     beforeEach((done) => {
-      wipeCollections([Slug, Author]).then(() => done());
+      wipeCollections([Slug, Author])
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     afterEach(() => {
@@ -67,7 +74,9 @@ describe('Author endpoints', () => {
         .expect('Content-Type', /json/)
         .expect(HTTPStatus.OK)
         .then((res) => {
-          expect(res.body).toEqual(expect.objectContaining(dummyAuthor));
+          expect(res.body).toEqual(
+            expect.objectContaining(dummyAuthor)
+          );
           expect(res.body.slug).toBeDefined();
           done();
         });
@@ -115,7 +124,9 @@ describe('Author endpoints', () => {
         .then((res) => {
           expect(originalSlug).toBeDefined();
           expect(res.body.slug).toBeDefined();
-          expect(res.body.slug).toMatch(new RegExp(`^${originalSlug}`));
+          expect(res.body.slug).toMatch(
+            new RegExp(`^${originalSlug}`)
+          );
           expect(res.body.slug).not.toBe(originalSlug);
           done();
         });
@@ -124,7 +135,9 @@ describe('Author endpoints', () => {
 
   describe('GET /authors/:authorId', () => {
     beforeEach((done) => {
-      wipeCollections([Slug, Author]).then(() => done());
+      wipeCollections([Slug, Author])
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     test('return the author if it exists', async (done) => {
@@ -135,7 +148,9 @@ describe('Author endpoints', () => {
         .expect(HTTPStatus.OK)
         .expect('Content-Type', /json/)
         .then((res) => {
-          expect(res.body).toEqual(expect.objectContaining(dummyAuthor));
+          expect(res.body).toEqual(
+            expect.objectContaining(dummyAuthor)
+          );
           done();
         });
     });
@@ -169,7 +184,9 @@ describe('Author endpoints', () => {
 
   describe('PUT /authors/:authorId', () => {
     beforeEach((done) => {
-      wipeCollections([Slug, Author]).then(() => done());
+      wipeCollections([Slug, Author])
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     test('return the updated document after saved to database', async (done) => {
@@ -278,7 +295,9 @@ describe('Author endpoints', () => {
         .expect(HTTPStatus.OK)
         .then((res) => {
           expect(res.body.slug).toBeDefined();
-          expect(res.body.slug).toMatch(new RegExp(`^${author1.slug}`));
+          expect(res.body.slug).toMatch(
+            new RegExp(`^${author1.slug}`)
+          );
           expect(res.body.slug).not.toBe(author1.slug);
           done();
         });
@@ -287,7 +306,9 @@ describe('Author endpoints', () => {
 
   describe('DELETE /authors/:authorId', () => {
     beforeEach((done) => {
-      wipeCollections([Slug, Author]).then(() => done());
+      wipeCollections([Slug, Author])
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     test('return No Content if deleted document successfully', async (done) => {
@@ -340,7 +361,8 @@ describe('Author endpoints', () => {
     beforeEach((done) => {
       wipeCollections([Slug, Author])
         .then(() => Author.create(dummyAuthorList))
-        .then(() => done());
+        .then(() => done())
+        .catch(err => done(err));
     });
 
     test('return a list of matched documents', (done) => {

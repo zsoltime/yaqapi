@@ -19,7 +19,6 @@ module.exports.list = (req, res, next) => {
   Author.find()
     .skip(skip)
     .limit(limit)
-    .exec()
     .then(authors => res.json(authors), err => next(err));
 };
 
@@ -39,33 +38,35 @@ module.exports.remove = (req, res, next) => {
 
 module.exports.search = (req, res, next) => {
   const { limit = 10, skip = 0 } = req.query;
-  const regex = new RegExp(req.params.query.replace(/(?=\W)/g, '\\'), 'i');
+  const regex = new RegExp(
+    req.params.query.replace(/(?=\W)/g, '\\'),
+    'i'
+  );
 
   Author.find({ name: { $regex: regex } })
     .skip(skip)
     .limit(limit)
-    .exec()
     .then(authors => res.json(authors), err => next(err));
 };
 
 module.exports.get = (req, res) => res.json(req.dbAuthor);
 
 module.exports.load = (req, res, next, id) => {
-  Author.findById(id)
-    .exec()
-    .then(
-      (author) => {
-        if (author) {
-          req.dbAuthor = author;
-          return next();
-        }
+  Author.findById(id).then(
+    (author) => {
+      if (author) {
+        req.dbAuthor = author;
+        return next();
+      }
 
-        return res.status(404).json({
-          status: 404,
-          statusText: HTTPStatus[404],
-          errors: [{ messages: ['The resource requested does not exist'] }],
-        });
-      },
-      err => next(err)
-    );
+      return res.status(404).json({
+        status: 404,
+        statusText: HTTPStatus[404],
+        errors: [
+          { messages: ['The resource requested does not exist'] },
+        ],
+      });
+    },
+    err => next(err)
+  );
 };
