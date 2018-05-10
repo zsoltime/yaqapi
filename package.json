@@ -8,7 +8,7 @@
     "dev": "cross-env NODE_ENV=development nodemon --exec \"node -r dotenv/config server\"",
     "lint": "eslint server/** test/**",
     "start": "cross-env NODE_ENV=production node -r dotenv/config server",
-    "test": "cross-env NODE_ENV=test node -r dotenv/config ./node_modules/.bin/jest --forceExit",
+    "test": "cross-env NODE_ENV=test node -r dotenv/config ./node_modules/.bin/jest --forceExit --runInBand",
     "test:watch": "cross-env NODE_ENV=test node -r dotenv/config ./node_modules/.bin/jest --watch --forceExit"
   },
   "jest": {
